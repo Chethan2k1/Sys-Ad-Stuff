@@ -1,5 +1,5 @@
-k=$1
-var=$2
+#!/bin/bash
+
 for (( j = 1; j < 21; j++ )); do
      echo "0 0 * * * cp /home/MasterH/task${k}/task${var} /home/MasterH-Intern${j}/task${k}"
    	 echo "0 0 * * * cp /home/Heisenberg/task${k}/task${var} /home/Heisenberg-Intern${j}/task${k}"
