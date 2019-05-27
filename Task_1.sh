@@ -105,12 +105,15 @@ for (( i = 1; i <=5; i++ )); do
 done
 
 for (( k = 1; k < 6; k++ )); do
-	 var=${myfunc}
+	 var=$(myfunc)
      crontab -l > mycron
-     /home/linux/Desktop/cronjob.sh "k" "var" >> mycron
+     export k
+     export var
+     bash /home/linux/Desktop/cronjob.sh >> mycron
      crontab mycron
      rm mycron
 done
+
 
 
 
