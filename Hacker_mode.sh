@@ -34,157 +34,179 @@ done
     sudo touch /home/Holland/Success.txt
     sudo touch /home/Holland/Failure.txt
 
-
 for (( i = 1; i < 21; i++ )); do
-	touch logs0-intern${i}.txt
-cat server_logs.txt | grep "MasterH-Intern${i} ->" > logs0-intern${i}.txt
-input="./logs0-intern${i}.txt"
+	touch logs0-MasterH-Intern${i}.txt
+cat server_logs.txt | grep "MasterH-Intern${i} ->" > logs0-MasterH-Intern${i}.txt
+input="./logs0-MasterH-Intern${i}.txt"
 while IFS= read -r line
 do
-	echo "MY name is ${line}"
-	d= echo "${LINE}" | grep "MasterH-Intern${i}" | cut -d " " -f4
-	path="/home/${d}"
-	su MasterH-Intern${i}
-	if  [ -x "${path}" ] ; then
-		echo "$LINE" > /home/MasterH-Intern${i}/Success.txt
-    else
-    	echo "$LINE" > /home/MasterH-Intern${i}/Failure.txt
-	fi  
+    a= echo "${line}" | grep MasterH-Intern${i} | cut -d " " -f2
+	b= echo "${line}" | grep MasterH-Intern${i} | cut -d " " -f4
+    c= echo "${a}" | grep -c intern
+    d= echo "${b}" | grep -c intern 
+	if [[ $c==1 && $d==1 ]]; then
+		echo "${line}" >> /home/MasterH-Intern${i}/Failure.txt
+	elif [[ $a=="MasterH" ]]; then
+		echo "${line}" >> /home/MasterH-Intern${i}/Success.txt
+	elif [[ $a==0 && $b==1 ]];then
+		echo "${line}" >> /home/MasterH-Intern${i}/Success.txt
+	else
+		echo "${line}" >> /home/MasterH-Intern${i}/Failure.txt
+	fi
 done < "$input"
-rm logs0-intern${i}.txt
+rm logs0-MasterH-Intern${i}.txt
 done
-
 
 for (( i = 1; i < 21; i++ )); do
-	touch logs0-intern${i}.txt
-cat server_logs.txt | grep "Heisenberg-Intern${i} ->" > logs0-intern${i}.txt
-input="./logs0-intern${i}.txt"
+	touch logs0-Heisenberg-Intern${i}.txt
+cat server_logs.txt | grep "Heisenberg-Intern${i} ->" > logs0-Heisenberg-Intern${i}.txt
+input="./logs0-Heisenberg-Intern${i}.txt"
 while IFS= read -r line
 do
-	echo "MY name is ${line}"
-	d= echo "${LINE}" | grep Heisenberg-Intern${i} | cut -d " " -f4
-	path="/home/${d}"
-	su Heisenberg-Intern${i}
-	if  [ -x "${path}" ] ; then
-		echo "$LINE" > /home/Heisenberg-Intern${i}/Success.txt
-    else
-    	echo "$LINE" > /home/Heisenber-Intern${i}/Failure.txt
-	fi  
+    a= echo "${line}" | grep Heisenberg-Intern${i} | cut -d " " -f2
+	b= echo "${line}" | grep Heisenberg-Intern${i} | cut -d " " -f4
+    c= echo "${a}" | grep -c intern
+    d= echo "${b}" | grep -c intern 
+	if [[ $c==1 && $d==1 ]]; then
+		echo "${line}" >> /home/Heisenberg-Intern${i}/Failure.txt
+	elif [[ $a=="MasterH" ]]; then
+		echo "${line}" >> /home/Heisenberg-Intern${i}/Success.txt
+	elif [[ $a==0 && $b==1 ]];then
+		echo "${line}" >> /home/Heisenberg-Intern${i}/Success.txt
+	else
+		echo "${line}" >> /home/Heisenberg-Intern${i}/Failure.txt
+	fi 
 done < "$input"
-rm logs0-intern${i}.txt
+rm logs0-Heisenberg-Intern${i}.txt
 done
-
 
 for (( i = 1; i < 21; i++ )); do
-	touch logs0-intern${i}.txt
-cat server_logs.txt | grep "Hertz-Intern${i} ->" > logs0-intern${i}.txt
-input="./logs0-intern${i}.txt"
+touch logs0-Hertz-Intern${i}.txt
+cat server_logs.txt | grep "Hertz-Intern${i} ->" > logs0-Hertz-Intern${i}.txt
+input="./logs0-Hertz-Intern${i}.txt"
 while IFS= read -r line
 do
-	echo "MY name is ${line}"
-	d= echo "${LINE}" | grep Hertz-Intern${i} | cut -d " " -f4
-	path="/home/${d}"
-	su Hertz-Intern${i}
-	if  [ -x "${path}" ] ; then
-		echo "$LINE" > /home/Hertz-Intern${i}/Success.txt
-    else
-    	echo "$LINE" > /home/Hertz-Intern${i}/Failure.txt
-	fi  
+    a= echo "${line}" | grep Hertz-Intern${i} | cut -d " " -f2
+	b= echo "${line}" | grep Hertz-Intern${i} | cut -d " " -f4
+    c= echo "${a}" | grep -c intern
+    d= echo "${b}" | grep -c intern 
+	if [[ $c==1 && $d==1 ]]; then
+		echo "${line}" >> /home/Hertz-Intern${i}/Failure.txt
+	elif [[ $a=="MasterH" ]]; then
+		echo "${line}" >> /home/Hertz-Intern${i}/Success.txt
+	elif [[ $a==0 && $b==1 ]];then
+		echo "${line}" >> /home/Hertz-Intern${i}/Success.txt
+	else
+		echo "${line}" >> /home/Hertz-Intern${i}/Failure.txt
+	fi 
 done < "$input"
-rm logs0-intern${i}.txt
+rm logs0-Hertz-Intern${i}.txt
 done
-
 
 for (( i = 1; i < 21; i++ )); do
-	touch logs0-intern${i}.txt
-cat server_logs.txt | grep "Holland-Intern${i} ->" > logs0-intern${i}.txt
-
-input="./logs0-intern${i}.txt"
+touch logs0-Holland-Intern${i}.txt
+cat server_logs.txt | grep "Holland ->" > logs0-Holland-Intern${i}.txt
+input="./logs0-Holland-Intern${i}.txt"
 while IFS= read -r line
 do
-	echo "MY name is ${line}"
-	d= echo "${LINE}" | grep Holland-Intern${i} | cut -d " " -f4
-	path="/home/${d}"
-	su Holland-Intern${i}
-	if  [ -x "${path}" ] ; then
-		echo "$LINE" > /home/Holland-Intern${i}/Success.txt
-    else
-    	echo "$LINE" > /home/Holland-Intern${i}/Failure.txt
-	fi  
+    a= echo "${line}" | grep Holland-Intern${i} | cut -d " " -f2
+	b= echo "${line}" | grep Holland-Intern${i} | cut -d " " -f4
+    c= echo "${a}" | grep -c intern
+    d= echo "${b}" | grep -c intern 
+	if [[ $c==1 && $d==1 ]]; then
+		echo "${line}" >> /home/Holland-Intern${i}/Failure.txt
+	elif [[ $a=="MasterH" ]]; then
+		echo "${line}" >> /home/Holland-Intern${i}/Success.txt
+	elif [[ $a==0 && $==1 ]];then
+		echo "${line}" >> /home/Holland-Intern${i}/Success.txt
+	else
+		echo "${line}" >> /home/Holland-Intern${i}/Failure.txt
+	fi 
 done < "$input"
-rm logs0-intern${i}.txt
+rm logs0-Holland-Intern${i}.txt
 done
-
 
 touch logs0-MasterH.txt
 cat server_logs.txt | grep "MasterH ->" > logs0-MasterH.txt
 input="./logs0-MasterH.txt"
 while IFS= read -r line
 do
-	echo "MY name is ${line}"
-	d= echo "${LINE}" | grep MasterH | cut -d " " -f4
-	path="/home/${d}"
-	su MasterH
-	if  [ -x "${path}" ] ; then
-		echo "$LINE" > /home/MasterH/Success.txt
-    else
-    	echo "$LINE" > /home/MasterH/Failure.txt
-	fi  
+    a= echo "${line}" | grep MasterH | cut -d " " -f2
+	b= echo "${line}" | grep MasterH | cut -d " " -f4
+    c= echo "${a}" | grep -c intern
+    d= echo "${b}" | grep -c intern 
+	if [[ ${c}==1 && ${d}==1 ]]; then
+		echo "${line}" >> /home/MasterH/Failure.txt
+	elif [[ ${a}=="MasterH" ]]; then
+		echo "${line}" >> /home/MasterH/Success.txt
+	elif [[ ${a}==0 && ${b}==1 ]];then
+		echo "${line}" >> /home/MasterH/Success.txt
+	else
+		echo "${line}" >> /home/MasterH/Failure.txt
+	fi 
 done < "$input"
 rm logs0-MasterH.txt
 
-
-rm logs0-Heisenberg.txt
 touch logs0-Heisenberg.txt
 cat server_logs.txt | grep "Heisenberg ->" > logs0-Heisenberg.txt
 input="./logs0-Heisenberg.txt"
 while IFS= read -r line
 do
-	echo "MY name is ${line}"
-	d= echo "${LINE}" | grep Heisenberg | cut -d " " -f4
-	path="/home/${d}"
-	su Heisenberg
-	if  [ -x "${path}" ] ; then
-		echo "$LINE" > /home/Heisenberg/Success.txt
-    else
-    	echo "$LINE" > /home/Heisenberg/Failure.txt
-	fi  
+    a= echo "${line}" | grep Heisenberg | cut -d " " -f2
+	b= echo "${line}" | grep Heisenberg | cut -d " " -f4
+    c= echo "${a}" | grep -c intern
+    d= echo "${b}" | grep -c intern 
+	if [[ $c==1 && $d==1 ]]; then
+		echo "${line}" >> /home/Heisenberg/Failure.txt
+	elif [[ $a=="MasterH" ]]; then
+		echo "${line}" >> /home/Heisenberg/Success.txt
+	elif [[ $a==0 && $b==1 ]];then
+		echo "${line}" >> /home/Heisenberg/Success.txt
+	else
+		echo "${line}" >> /home/Heisenberg/Failure.txt
+	fi 
 done < "$input"
 rm logs0-Heisenberg.txt
-
 
 touch logs0-Hertz.txt
 cat server_logs.txt | grep "Hertz ->" > logs0-Hertz.txt
 input="./logs0-Hertz.txt"
 while IFS= read -r line
 do
-	echo "MY name is ${line}"
-	d= echo "${LINE}" | grep Hertz | cut -d " " -f4
-	path="/home/${d}"
-	su Hertz
-	if  [ -x "${path}" ] ; then
-		echo "$LINE" > /home/Hertz/Success.txt
-    else
-    	echo "$LINE" > /home/Hertz/Failure.txt
-	fi  
+    a= echo "${line}" | grep Hertz | cut -d " " -f2
+	b= echo "${line}" | grep Hertz | cut -d " " -f4
+    c= echo "${a}" | grep -c intern
+    d= echo "${b}" | grep -c intern 
+	if [[ $c==1 && $d==1 ]]; then
+		echo "${line}" >> /home/Hertz/Failure.txt
+	elif [[ $a=="MasterH" ]]; then
+		echo "${line}" >> /home/Hertz/Success.txt
+	elif [[ $a==0 && $b==1 ]];then
+		echo "${line}" >> /home/Hertz/Success.txt
+	else
+		echo "${line}" >> /home/Hertz/Failure.txt
+	fi 
 done < "$input"
 rm logs0-Hertz.txt
-
 
 touch logs0-Holland.txt
 cat server_logs.txt | grep "Holland ->" > logs0-Holland.txt
 input="./logs0-Holland.txt"
 while IFS= read -r line
 do
-	echo "MY name is ${line}"
-	d= echo "${LINE}" | grep Holland | cut -d " " -f4
-	path="/home/${d}"
-	su Holland
-	if  [ -x "${path}" ] ; then
-		echo "$LINE" > /home/Holland/Success.txt
-    else
-    	echo "$LINE" > /home/Holland/Failure.txt
-	fi  
+    a= echo "${line}" | grep Holland | cut -d " " -f2
+	b= echo "${line}" | grep Holland | cut -d " " -f4
+    c= echo "${a}" | grep -c intern
+    d= echo "${b}" | grep -c intern 
+	if [[ $c==1 && $d==1 ]]; then
+		echo "${line}" >> /home/Holland/Failure.txt
+	elif [[ $a=="MasterH" ]]; then
+		echo "${line}" >> /home/Holland/Success.txt
+	elif [[ $a==0 && $b==1 ]];then
+		echo "${line}" >> /home/Holland/Success.txt
+	else
+		echo "${line}" >> /home/Holland/Failure.txt
+	fi 
 done < "$input"
 rm logs0-Holland.txt
 
