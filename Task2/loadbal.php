@@ -1,64 +1,71 @@
-<?php
-    function check_req()
-    {
-        $query_id=mysql_query("select * from req");
-        while ($row=mysql_fetch_assoc($query_id)) {
-            $id=$row['ID'];
-            $time_need=$row['time_started'];
-            $node=$row['node_name'];
-            $query_id1=mysql_query("select * from Requests wherer ID=$id");
-            $row1=mysql_fetch_assoc($query_id1);
-            $time_need0=$row1['comp_time_req'];
-            $time_need1=$time_need;
-            $time_need=$time_need+$time_need0;
-            if ($time_need<time()) {
-                mysql_query('delete from req where ID=$id');
-                mysql_query('delete from Requests where ID=$id');
-                echo "Deleted Request ID : ".$id;
-                switch ($node) {
+<?php	
+
+	function Ck_cmped($conn)
+	{
+		$time=time();
+		$query_run=mysqli_query($conn,"SELECT * FROM req;");
+		while ($query_row=mysqli_fetch_assoc($query_run)) 
+		{
+			$ID=$query_row['ID'];
+			$Time=$query_row['time_started'];
+			$result1=mysqli_query($conn,"SELECT * FROM Requests WHERE ID=$ID;");
+			$result=mysqli_fetch_assoc($result1);
+			$comp_time_req=$result['comp_time_req'];
+			$Time+=$comp_time_req;
+			$node=$result['allocated_node_name'];
+			$CPU_Req=$result['CPU_Req'];
+			$Mem_Req=$result['Memory_Req'];
+			if($time>$Time)
+			{
+				mysqli_query($conn,"DELETE FROM req WHERE ID=$ID;");
+				mysqli_query($conn,"DELETE FROM Requests WHERE ID=$ID;");
+				mysqli_query($conn,"UPDATE nodes SET CPUS=CPUS+$CPU_Req,Mem_Aval=Mem_Aval+$Mem_Req WHERE name=$node;");
+			 	switch ($node) 
+			 	{
                     case '80':
-                            mysql_query("insert into history1 values('$id','date('h:m:s,$time_need1')','date('h:m:s,$time_need)')");
+                            mysqli_query($conn,"INSERT INTO history1 (ID) VALUES('$ID');") or die("Fuck off") ;
                         break;
                     case '81':
-                            mysql_query("insert into history2 values('$id','date('h:m:s,$time_need1')','date('h:m:s,$time_need)')");
+                            mysqli_query($conn,"INSERT INTO history2 (ID) VALUES('$ID');");
                         break;
                     case '82':
-                            mysql_query("insert into history3 values('$id','date('h:m:s,$time_need1')','date('h:m:s,$time_need)')");
+                            mysqli_query($conn,"INSERT INTO history3 (ID) VALUES('$ID');");
                         break;
                     case '83':
-                            mysql_query("insert into history4 values('$id','date('h:m:s,$time_need1')','date('h:m:s,$time_need)')");
+                            mysqli_query($conn,"INSERT INTO history4 (ID) VALUES('$ID');");
                         break;
                 }
             }
-        }
-    }
-    echo "Succesfully submitted ";
-    $CPUs=$_POST['CPUs'];
-    $Rq_Mem=$_POST['Mem_Need'];
-    $Rq_Time=$_POST['Time'];
-    echo $CPUs." : ".$Rq_Mem." : ".$Rq_Time;
-    mysql_connect("localhost","root","Pass123") or die("Couldn't Connect to the SQL Server");
-    mysql_select_db('ser_det');
-    check_req();
-    $query_run=mysql_query("select * from nodes where CPUs > $CPUs and Mem_Aval > $Rq_Mem order by CPUs Desc") or die("Couldn't run the query");
-    echo "<br>";
-    if($query_row=mysql_fetch_assoc($query_run))
-    {
-        print_r($query_row);
-        echo "<br>";
-        $node_name=$query_row['name'];
-        $time=time();
-        $time_stamp=date('h:m:s,$time');
-        $query_num=mysql_query("select * from Requests order by ID Desc");
-        $max_id_row=mysql_fetch_assoc($query_num);
-        $ID=$max_id_row['ID'];
-        mysql_query("insert into Requests(allocated_node_name,Starttime,CPU_Req,Memory_Req,comp_time_req) values('$node_name','$time_stamp','$CPUs','$Rq_Mem','Rq_Time'"); 
-        mysql_query("update nodes set CPUs=CPUs-$CPUs,Mem_Aval=Mem_Aval-$Rq_Mem where name=$node_name");
-        mysql_query("insert into req values($ID,$time,$node_name)");
+		}
+	}
 
-    }
-    else
-    {
-        Die("Can't Handle the Request in this moment");
-    }
+	$CPUs=$_POST['CPUs'];
+	$Mem_Need=$_POST['Mem_Need'];
+	$Time=$_POST['Time'];
+	echo "Succesfully submitted";
+	$conn=mysqli_connect('localhost','root','Pass123','ser_det') or die("SQL_Database Connection Unsuccesful!");
+	Ck_cmped($conn);
+	$query_run=mysqli_query($conn,"SELECT * FROM nodes WHERE CPUs > $CPUs and Mem_Aval > $Mem_Need ORDER BY CPUs DESC;") or die("Couldn't run the query");
+	echo "<br>";
+	if($query_row=mysqli_fetch_assoc($query_run))
+	{
+		$node_name=$query_row['name'];
+        $time=time();
+        $time_stamp=date('h:m:s');
+        echo($time_stamp."<br>");
+        $stmt=$conn->prepare("INSERT INTO Requests (allocated_node_name,Starttime,CPU_Req,Memory_Req,comp_time_req) VALUES(?,?,?,?,?);") or die('why');
+        $stmt->bind_param('sssss',$node_name,$time_stamp,$CPUs,$Mem_Need,$Time) or die('fail1');
+        $result=$stmt->execute() or die('fail_too');
+        echo $result;
+        $stmt->close();
+        $query_run1=mysqli_query($conn,"SELECT * FROM Requests ORDER BY ID DESC;");
+        $query_row1=mysqli_fetch_assoc($query_run1);
+        $ID=$query_row1['ID'];
+        mysqli_query($conn,"UPDATE nodes SET CPUs=CPUs-$CPUs,Mem_Aval=Mem_Aval-$Mem_Need WHERE name=$node_name");
+        mysqli_query($conn,"INSERT INTO req VALUES($ID,$time,$node_name)") or die("Not happening");
+	}
+	else
+	{
+		echo("Can't Handle the Request in this moment");
+	}
 ?>
