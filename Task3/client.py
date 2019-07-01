@@ -12,17 +12,23 @@ port=1235
 s.connect((host,port))
 s.setblocking(False)
 
+
 def msg_input():
     while True:
         msg=input('> ')
-        if msg:
+        if len(msg)!=0:
             new_msg='@'+name+'> '+msg
             s.send(new_msg.encode('utf-8'))
+        else:
+            continue
 
 def msg_read():
     while True:
             data=s.recv(1024).decode('utf-8')
-            print(data)
+            if(len(data)!=0):
+                print(data)
+            else:
+                continue
     
 threading.Thread(target=msg_input,daemon=True).start()
 threading.Thread(target=msg_read,daemon=True).start()
