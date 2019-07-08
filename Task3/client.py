@@ -30,5 +30,5 @@ def msg_read():
             else:
                 continue
     
-threading.Thread(target=msg_input,daemon=True).start()
-threading.Thread(target=msg_read,daemon=True).start()
+threading.Thread(target=msg_input).start()
+threading.Thread(target=msg_read).start()
